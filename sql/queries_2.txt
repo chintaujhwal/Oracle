@@ -1,0 +1,68 @@
+select * from departments
+where department_id in
+(
+ select department_id from employees
+ group by department_id
+ having avg(salary) =
+(select max(avg(salary))
+ from employees
+ group by department_id))
+
+select c.name,to_char(paydate,'mm-yyyy'), sum(amount) from payments 
+join students s using(admno) join courses c on (s.course = c.code)
+group by c.name, to_char(paydate,'mm-yyyy')
+order by 2,1
+
+select e1.first_name Employee, e2.first_name Manager,e1.hire_date, e2.hire_date
+from employees e1 join employees e2
+on e1.manager_id = e2.employee_id
+where e1.hire_date < e2.hire_date
+
+select * from employees where salary < (select avg(salary) from employees)
+
+select * from employees 
+where employee_id in (select employee_id from job_history where department_id = 80)
+
+select * from departments
+where department_id in (select department_id from employees where salary > 10000)
+
+select department_name, count(employee_id) from employees
+right outer join departments using (department_id)
+group by department_name
+
+select first_name, salary from employees
+where salary > (select salary from employees where first_name='Nancy')
+
+select * from jobs
+where job_id in (select job_id from employees group by job_id having count(*) > 10)
+
+select first_name, job_id, salary from employees
+where 
+job_id = (select job_id from employees where first_name='Diana')
+and
+salary > (select salary from employees where first_name='Diana')
+
+select first_name,department_name 
+from departments d,employees e
+where d.department_id = e.department_id
+
+select * from departments
+where location_id in (select location_id from locations where city='Seattle')
+
+select * from departments
+natural join locations
+where city='Seattle'
+
+select e1.first_name employee, e2.first_name manager 
+from employees e1 join employees e2
+on e1.manager_id = e2.employee_id
+
+select * from
+(select first_name,salary from employees
+order by salary desc)
+where rownum <= 5
+
+create or replace view it_employees as
+select job_id, first_name || ' ' || last_name name
+from employees
+where job_id like 'IT%'

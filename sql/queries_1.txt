@@ -1,0 +1,130 @@
+select first_name, salary from employees
+where department_id = 80 and salary between 2000 and 10000
+
+select first_name, salary from employees
+where salary > 5000
+
+select job_id, first_name from employees
+where job_id like 'SA_MAN' or job_id like 'ST_CLERK'
+
+select job_id,job_title from jobs
+  
+select city from locations
+where city like 'S%'
+
+select manager_id, last_name from employees
+where manager_id = 103 and last_name like '%a'
+
+select job_id, first_name, last_name, salary, salary + salary * 0.2 new_salary
+from employees
+where department_id in (60,80,100)
+
+select * from jobs
+where job_title like '%Sales%' or job_title like '%Stock%'
+
+select employee_id, round(months_between(end_date,start_date) / 12) years from job_history
+where round(months_between(end_date,start_date) / 12) > 5
+
+select employee_id, round(months_between(end_date,start_date)) months from job_history
+where round(months_between(end_date,start_date)) < 10
+
+select first_name, hire_date, last_day(hire_date) + 1 first_salary from employees
+
+select first_name from employees
+where first_name like 'N%' and length(first_name) > 5
+
+select first_name, hire_date from employees
+where hire_date > '1-jan-2005'
+
+select first_name from employees
+where first_name like '%s%' or first_name like '%t%'
+
+select first_name, replace(first_name,'t','*') from employees
+where first_name like '%t%'
+
+select first_name, hire_date from employees
+where to_char(hire_date,'MM') <= 3
+
+select job_id, start_date, end_date from job_history
+where to_char(start_date,'YY') = to_char(end_date,'YY') 
+
+select first_name, hire_date from employees
+where to_char(hire_date,'MM') <= 3
+
+select first_name, hire_date, decode(to_char(hire_date,'MM'),1,1,2,1,3,1,4,2,5,2,6,2,7,3,8,3,9,3,4) quarter
+from employees
+
+select first_name, hire_date, nvl(commission_pct,0) commission_pct from employees
+where to_char(hire_date,'YYYY') > 2001 and first_name like 'S%'
+
+select first_name, to_char(hire_date,'DD-MM-YY hh:mi:ss') date_of_joining, initcap(to_char(hire_date,'DAY'))day_of_joining from employees
+
+select count(commission_pct) from employees
+
+select round(avg(salary)) from employees where department_id = 80
+
+select employee_id, count(*) from job_history group by employee_id
+
+select department_id,count(*) from employees group by department_id
+
+select job_id,count(*) from employees 
+group by job_id 
+having count(*) > 2
+
+select nvl(manager_id,0) manager_id, first_name, round(months_between(sysdate,hire_date)/12) Experience from employees
+
+select department_id, to_char(hire_date,'yyyy') Year, to_char(hire_date,'mm') Month, count(*) Employees_Joined from employees
+where department_id is not null
+group by(department_id, to_char(hire_date,'yyyy'), to_char(hire_date,'mm')) having count(*) > 2
+order by 1,2,3
+
+select to_char(hire_date,'mm') Month, count(*) Employees_Joined from employees
+group by(to_char(hire_date,'mm'))
+order by 1
+
+select job_id, max_salary-min_salary Difference from jobs
+where max_salary-min_salary > 5000
+order by job_id
+
+select department_id, first_name, length(first_name) length from employees
+where length(first_name) > 5
+
+select department_id, to_char(hire_date,'month') month, count(*) Employees_Joined from employees
+group by rollup(department_id, to_char(hire_date,'month'))
+order by 1
+
+select first_name, job_title, max_salary - salary gap 
+from employees
+natural join jobs
+
+select department_name, employee_id, start_date, end_date
+from departments join job_history 
+using (department_id)
+
+select country_name, city 
+from locations join countries
+using(country_id)
+where city like '%o%'
+
+select first_name, job_title, start_date, end_date from employees
+join job_history using (job_id)
+join jobs using (job_id)
+
+select manager_id, department_name, country_name, city from departments
+join locations using (location_id)
+join countries using (country_id)
+where manager_id is not NULL
+
+select first_name, last_name, salary from employees
+natural join jobs
+where min_salary > 5000
+
+select first_name, department_name, city from employees
+natural join departments
+natural join locations
+
+select first_name, department_name, city
+from employees e 
+join departments d
+on (d.manager_id) = (e.employee_id)
+join locations using (location_id)
