@@ -1,0 +1,37 @@
+create table salary_history
+(
+employee_id number(6),
+salary number(8,2),
+hire_date date
+);
+
+create table dept_history
+(
+employee_id number(6),
+department_id number(4),
+hire_date date
+);
+
+create table old_employees
+(
+employee_id number(6),
+employee_name varchar(20),
+hire_date date
+);
+
+insert all
+into salary_history
+    values(employee_id,salary,hire_date)
+into dept_history
+    values(employee_id,department_id,hire_date)
+select * from employees
+where salary > 10000
+
+insert all
+when hire_date < '1-JAN-2005' then
+    into old_employees
+    values(employee_id,first_name || ' ' || last_name,hire_date)
+
+select * from salary_history
+select * from dept_history
+select * from old_employees
