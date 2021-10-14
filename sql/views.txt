@@ -1,7 +1,0 @@
-create or replace view department_summary as
-select department_name, round(avg(salary)) avg_salary, count(*) employees_working
-from departments join employees using (department_id)
-group by department_name
-
-select * from department_summary
-where department_name like 'S%'
